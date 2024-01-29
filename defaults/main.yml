@@ -1,0 +1,10 @@
+---
+# defaults file for UnixLoginManagement
+IsAdmin: false
+TheMember: 'ToBeDefined'
+TheADDomain: 'ToBeDefined'
+ItIsaGroup: false
+ItIsaUser: false
+TheAction: 'permit'
+BeVerbose: false
+...

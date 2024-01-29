@@ -1,0 +1,24 @@
+---
+- name: is it an account
+  block:
+  - name: check if it is a group
+    ansible.builtin.shell: 'getent group {{ TheMember }}'
+    register: IsItaGroup
+    failed_when:
+    - IsItaGroup.rc != 0
+    - IsItaGroup.rc != 2
+    changed_when: false
+
+  - name: debug IsItaGroup
+    ansible.builtin.debug:
+      var: IsItaGroup
+    when:
+    - BeVerbose is defined
+    - BeVerbose|bool
+
+  - name: set ItIsaGroup
+    ansible.builtin.set_fact:
+      ItIsaGroup: true
+    when: IsItaGroup.rc == 0
+  when: not ItIsaUser|bool
+...

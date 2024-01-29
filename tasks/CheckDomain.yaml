@@ -1,0 +1,20 @@
+---
+- name: get domain info
+  ansible.builtin.shell: 'realm discover -v {{ TheADDomain }}'
+  register: DomainInfo
+  changed_when: false
+
+- name: debug DomainInfo
+  ansible.builtin.debug:
+    var: DomainInfo
+  when:
+  - BeVerbose is defined
+  - BeVerbose|bool
+
+- name: "check the server is member of the {{ TheADDomain }}"
+  ansible.builtin.assert:
+    quiet: true
+    that:
+    - "'configured: no' not in DomainInfo.stdout"
+    - "'configured: kerberos-member' in DomainInfo.stdout"
+...

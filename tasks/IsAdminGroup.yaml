@@ -1,0 +1,21 @@
+---
+- name: Admin group
+  block:
+  - name: 'create /etc/sudoers.d/{{ TheMember|upper }} file'
+    ansible.builtin.copy:
+      dest: '/etc/sudoers.d/{{ TheMember|upper }}'
+      owner: root
+      group: root
+      mode: '640'
+      validate: /usr/sbin/visudo -csf %s
+      content: |
+        # Added on {{ ansible_date_time.date }}
+        # Group {{ TheMember }}
+        #
+        "%{{ TheMember|upper }}" ALL=(ALL) NOPASSWD:ALL
+  become: true
+  when:
+  - ItIsaGroup|bool
+  - IsAdmin|bool
+  - TheAction == 'permit'
+...

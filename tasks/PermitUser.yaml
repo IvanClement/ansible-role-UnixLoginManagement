@@ -1,0 +1,36 @@
+---
+- name: realm as root
+  block:
+  - name: IsUser already permitted
+    ansible.builtin.shell: cat /etc/sssd/sssd.conf|grep simple_allow_users|grep -i {{ TheMember }}
+    register: UserIsAlreadyPermitted
+    changed_when: false
+    failed_when:
+    - UserIsAlreadyPermitted.rc != 0
+    - UserIsAlreadyPermitted.rc != 1
+  
+  - name: debug UserIsAlreadyPermitted
+    ansible.builtin.debug:
+      var: UserIsAlreadyPermitted
+    when:
+    - BeVerbose is defined
+    - BeVerbose|bool
+
+  - name: Actually permit
+    block:
+    - name: permit user {{ TheMember }}
+      ansible.builtin.shell: realm permit {{ TheMember }}
+      register: PermitUser
+
+    - name: debug PermitUser
+      ansible.builtin.debug:
+        var: PermitUser
+      when:
+      - BeVerbose is defined
+      - BeVerbose|bool
+    when: UserIsAlreadyPermitted.rc != 0
+  become: true
+  when:
+  - ItIsaUser|bool
+  - TheAction == 'permit'
+...

@@ -1,0 +1,36 @@
+---
+- name: realm as root
+  block:
+  - name: IsUser already permitted
+    ansible.builtin.shell: cat /etc/sssd/sssd.conf|grep simple_allow_groups|grep -i {{ TheMember }}
+    register: GroupIsPermitted
+    changed_when: false
+    failed_when:
+    - GroupIsPermitted.rc != 0
+    - GroupIsPermitted.rc != 1
+  
+  - name: actuall permit group
+    block:
+    - name: debug GroupIsPermitted
+      ansible.builtin.debug:
+        var: GroupIsPermitted
+      when:
+      - BeVerbose is defined
+      - BeVerbose|bool
+
+    - name: permit group {{ TheMember }}
+      ansible.builtin.shell: realm permit -g -x {{ TheMember }}
+      register: PermitGroup
+
+    - name: debug PermitGroup
+      ansible.builtin.debug:
+        var: PermitGroup
+      when:
+      - BeVerbose is defined
+      - BeVerbose|bool
+    when: GroupIsPermitted.rc == 0
+  become: true
+  when:
+  - ItIsaGroup|bool
+  - TheAction != 'permit'
+...

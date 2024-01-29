@@ -1,0 +1,34 @@
+---
+# tasks file for UnixLoginManagement
+- name: Linux system
+  ansible.builtin.assert:
+    quiet: true
+    that:
+      ansible_system == 'Linux'
+
+- name: check if TheMember is defined
+  ansible.builtin.assert:
+    quiet: true
+    fail_msg: |
+      set the member you want to add in the TheMember variable. -e TheMember=GroupOrAccount
+      set the AD Domain the Linux server is member of. -e TheADDomain=MyADDomain
+    that:
+    - TheMember != 'ToBeDefined'
+    - TheADDomain != 'ToBeDefined'
+
+- name: include tasks
+  ansible.builtin.include_tasks: "{{ TheTask }}"
+  loop:
+  - CheckDomain.yaml
+  - CheckUser.yaml
+  - CheckGroup.yaml
+  - ContinueOrNot.yaml
+  - PermitGroup.yaml
+  - PermitUser.yaml
+  - WithdrawGroup.yaml
+  - WithdrawUser.yaml
+  - IsAdminGroup.yaml
+  - IsAdminUser.yaml
+  loop_control:
+    loop_var: TheTask
+...
