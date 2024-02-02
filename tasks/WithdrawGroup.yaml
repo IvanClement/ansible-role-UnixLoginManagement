@@ -18,7 +18,7 @@
       - BeVerbose is defined
       - BeVerbose|bool
 
-    - name: permit group {{ TheMember }}
+    - name: remove group {{ TheMember }}
       ansible.builtin.shell: realm permit -g -x {{ TheMember }}
       register: PermitGroup
 

@@ -18,7 +18,7 @@
 
   - name: Actually withdraw user
     block:
-    - name: permit user {{ TheMember }}
+    - name: remove user {{ TheMember }}
       ansible.builtin.shell: realm permit -x {{ TheMember }}
       register: WithdrawUser
 
