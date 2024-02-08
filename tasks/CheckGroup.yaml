@@ -1,5 +1,5 @@
 ---
-- name: is it an account
+- name: "is {{ TheMember }} an group"
   block:
   - name: check if it is a group
     ansible.builtin.shell: 'getent group {{ TheMember }}'
@@ -16,7 +16,7 @@
     - BeVerbose is defined
     - BeVerbose|bool
 
-  - name: set ItIsaGroup
+  - name: "if {{ TheMember }} is a group, set ItIsaGroup to true"
     ansible.builtin.set_fact:
       ItIsaGroup: true
     when: IsItaGroup.rc == 0
