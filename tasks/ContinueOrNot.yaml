@@ -2,15 +2,15 @@
 - name: debug both
   ansible.builtin.debug:
     msg:
-    - "ItIsaUser: '{{ ItIsaUser }}'"
-    - "ItIsaGroup: '{{ ItIsaGroup }}'"
+    - "ItIsaUser: {{ ItIsaUser }}"
+    - "ItIsaGroup: {{ ItIsaGroup }}"
   when:
   - BeVerbose is defined
   - BeVerbose|bool
 
 - name: fail if it is neither a group nor a user
   ansible.builtin.fail:
-    msg: "'{{ TheMember }}' must be either a group or a user"
+    msg: "{{ TheMember }} must be either a group or a user"
   when:
   - not ItIsaGroup|bool
   - not ItIsaUser|bool
