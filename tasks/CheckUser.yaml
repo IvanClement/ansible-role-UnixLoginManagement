@@ -17,7 +17,7 @@
     - BeVerbose is defined
     - BeVerbose|bool
   
-  - name: "{{ TheMember }} is a user. set ItIsaUser=true"
+  - name: "if {{ TheMember }} is a user. set ItIsaUser=true"
     ansible.builtin.set_fact:
       ItIsaUser: true
     when: IsItaUser.rc == 0
