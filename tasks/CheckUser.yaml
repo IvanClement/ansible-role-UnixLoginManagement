@@ -2,7 +2,7 @@
 - name: "is {{ TheMember }} an account"
   block:
   - name: Check if it is a user
-    ansible.builtin.shell: 'id {{ TheMember }}'
+    ansible.builtin.shell: 'id "{{ TheMember }}"'
     register: IsItaUser
     failed_when:
     - IsItaUser.rc != 0
