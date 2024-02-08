@@ -1,7 +1,7 @@
 ---
 - name: realm as root
   block:
-  - name: "IsUser {{ TheMember }} already permitted"
+  - name: "Is User {{ TheMember }} already permitted"
     ansible.builtin.shell: cat /etc/sssd/sssd.conf|grep simple_allow_users|grep -i '{{ TheMember }}'
     register: UserIsAlreadyPermitted
     changed_when: false

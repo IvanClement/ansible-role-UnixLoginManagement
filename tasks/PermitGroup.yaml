@@ -1,8 +1,8 @@
 ---
 - name: realm as root
   block:
-  - name: IsUser already permitted
-    ansible.builtin.shell: cat /etc/sssd/sssd.conf|grep simple_allow_groups|grep -i {{ TheMember }}
+  - name: "Is group {{ TheMember }} already permitted"
+    ansible.builtin.shell: cat /etc/sssd/sssd.conf|grep simple_allow_groups|grep -i '{{ TheMember }}'
     register: GroupIsAlreadyPermitted
     changed_when: false
     failed_when:
@@ -18,8 +18,8 @@
       - BeVerbose is defined
       - BeVerbose|bool
 
-    - name: permit group {{ TheMember }}
-      ansible.builtin.shell: realm permit -g {{ TheMember }}
+    - name: "permit group {{ TheMember }}"
+      ansible.builtin.shell: realm permit -g '{{ TheMember }}'
       register: PermitGroup
 
     - name: debug PermitGroup

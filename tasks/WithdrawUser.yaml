@@ -1,8 +1,8 @@
 ---
 - name: realm as root
   block:
-  - name: IsUser already permitted
-    ansible.builtin.shell: cat /etc/sssd/sssd.conf|grep simple_allow_users|grep -i {{ TheMember }}
+  - name: Is user {{ TheMember }} already permitted
+    ansible.builtin.shell: cat /etc/sssd/sssd.conf|grep simple_allow_users|grep -i '{{ TheMember }}'
     register: IsPermitted
     changed_when: false
     failed_when:
@@ -16,10 +16,10 @@
     - BeVerbose is defined
     - BeVerbose|bool
 
-  - name: Actually withdraw user
+  - name: "Actually withdraw user {{ TheMember }}"
     block:
     - name: remove user {{ TheMember }}
-      ansible.builtin.shell: realm permit -x {{ TheMember }}
+      ansible.builtin.shell: realm permit -x '{{ TheMember }}'
       register: WithdrawUser
 
     - name: debug WithdrawUser
