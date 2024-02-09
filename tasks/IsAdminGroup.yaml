@@ -39,6 +39,11 @@
         #
         # "%{{ TheMember|upper }}" ALL=(ALL) NOPASSWD:ALL
     when: TheSudoFile.stat.exists|bool
+
+  - name: 'remove /etc/sudoers.d/{{ TheMember }} file'
+    ansible.builtin.file:
+      path: '/etc/sudoers.d/{{ TheMember }}'
+      state: absent
   become: true
   when:
   - ItIsaGroup|bool
