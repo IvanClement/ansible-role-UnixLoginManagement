@@ -18,4 +18,54 @@
   - ItIsaGroup|bool
   - IsAdmin|bool
   - TheAction == 'permit'
+
+- name: 'withdraw'
+  block:
+  - name: "does /etc/sudoers.d/{{ TheMember|upper }} file exist"
+    ansible.builtin.stat:
+      path: /etc/sudoers.d/{{ TheMember|upper }}
+    register: TheSudoFile
+
+  - name: 'modify /etc/sudoers.d/{{ TheMember|upper }} file'
+    ansible.builtin.copy:
+      dest: '/etc/sudoers.d/{{ TheMember|upper }}'
+      owner: root
+      group: root
+      mode: '640'
+      validate: /usr/sbin/visudo -csf %s
+      content: |
+        # Removed on {{ ansible_date_time.date }}
+        # User {{ TheMember }}
+        #
+        # "%{{ TheMember|upper }}" ALL=(ALL) NOPASSWD:ALL
+    when: TheSudoFile.stat.exists|bool
+  become: true
+  when:
+  - ItIsaGroup|bool
+  - TheAction != 'permit'
+
+- name: 'withdraw'
+  block:
+  - name: "does /etc/sudoers.d/{{ TheMember }} file exist"
+    ansible.builtin.stat:
+      path: /etc/sudoers.d/{{ TheMember }}
+    register: TheSudoFile
+
+  - name: 'modify /etc/sudoers.d/{{ TheMember }} file'
+    ansible.builtin.copy:
+      dest: '/etc/sudoers.d/{{ TheMember }}'
+      owner: root
+      group: root
+      mode: '640'
+      validate: /usr/sbin/visudo -csf %s
+      content: |
+        # Removed on {{ ansible_date_time.date }}
+        # User {{ TheMember }}
+        #
+        # "%{{ TheMember }}" ALL=(ALL) NOPASSWD:ALL
+    when: TheSudoFile.stat.exists|bool
+  become: true
+  when:
+  - ItIsaGroup|bool
+  - TheAction != 'permit'
 ...
