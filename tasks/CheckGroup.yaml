@@ -1,7 +1,7 @@
 ---
 - name: "is {{ TheMember | quote }} a group"
   block:
-  - name: check if it is a group
+  - name: check if {{ TheMember | quote }} is a group
     ansible.builtin.shell:
       cmd: 'getent group {{ TheMember | quote }}'
     register: IsItaGroup
