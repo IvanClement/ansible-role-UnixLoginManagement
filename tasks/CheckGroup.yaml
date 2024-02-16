@@ -3,7 +3,7 @@
   block:
   - name: check if it is a group
     ansible.builtin.shell:
-      cmd: getent group ""{{ TheMember }}""
+      cmd: getent group """{{ TheMember }}"""
     register: IsItaGroup
     failed_when:
     - IsItaGroup.rc != 0
