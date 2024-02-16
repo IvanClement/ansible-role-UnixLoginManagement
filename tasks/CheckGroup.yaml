@@ -1,4 +1,6 @@
 ---
+# https://copyprogramming.com/howto/ansible-ad-hoc-shell-command-quotes-inside-of-quotes
+#
 - name: "is {{ TheMember | quote }} a group"
   block:
   - name: check if {{ TheMember | quote }} is a group
