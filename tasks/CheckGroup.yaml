@@ -1,11 +1,10 @@
 ---
 # https://copyprogramming.com/howto/ansible-ad-hoc-shell-command-quotes-inside-of-quotes
 #
-- name: "is {{ TheMember | quote }} a group"
+- name: "is {{ TheMember }} a group"
   block:
-  - name: check if {{ TheMember | quote }} is a group
-    ansible.builtin.shell:
-      cmd: 'getent group {{ TheMember | quote }}'
+  - name: check if {{ TheMember }} is a group
+    ansible.builtin.shell: 'getent group "{{ TheMember }}"'
     register: IsItaGroup
     failed_when:
     - IsItaGroup.rc != 0
